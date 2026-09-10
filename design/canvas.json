@@ -1,0 +1,10 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 390, "h": 844, "title": "A · VFD dashboard (live)", "is_interactive": true },
+    { "file": "Lcd.dc.html", "x": 520, "y": 0, "w": 390, "h": 844, "title": "D · Monochrome LCD (sketch)" }
+  ],
+  "annotations": [
+    { "id": "read-me", "x": 0, "y": -190, "w": 440, "text": "A is the working prototype, now in the style of a 1980s vacuum-fluorescent dashboard (Corvette C4 / 300ZX): a 40-segment bar-graph gauge lit to the saving rate, a blinking red segment at the required rate, a small marker at the earning rate, dot-matrix numerals with unlit ghost digits behind, and a segmented arrival timeline. Tweaks above the frame switch phosphor color (cyan / green / amber) and the clocked-in state; the button logs a ¥50k boost.\nD is a rough alternate: the same layout as a monochrome calculator LCD. Same numbers everywhere: 手取り 35万, spend 20万, 160h/month, ¥4.2M saved, FIRE ¥30M by 2040-01. Investment returns are not modeled yet." }
+  ],
+  "launch": { "view": "canvas" }
+}

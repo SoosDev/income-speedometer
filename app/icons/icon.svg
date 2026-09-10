@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#05080a"/>
+  <g stroke="#0f2a2a" stroke-width="26" stroke-linecap="butt" fill="none">
+    <path d="M110 330 A170 170 0 1 1 402 330" stroke-dasharray="14 12"/>
+  </g>
+  <g stroke="#5cf2df" stroke-width="26" fill="none">
+    <path d="M110 330 A170 170 0 0 1 176 132" stroke-dasharray="14 12"/>
+  </g>
+  <g stroke="#ff4d3d" stroke-width="26" fill="none">
+    <path d="M190 122 A170 170 0 0 1 206 116" />
+  </g>
+  <text x="256" y="300" text-anchor="middle" font-family="Courier New, monospace" font-weight="700" font-size="150" fill="#5cf2df">¥</text>
+</svg>

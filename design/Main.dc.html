@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #05080a; font-family: 'Chakra Petch', 'Trebuchet MS', sans-serif; color: #cfe9e6; }
+    a { color: #5cf2df; } a:hover { color: #9cfff3; }
+    .dot { font-family: 'Doto', 'Courier New', monospace; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+    .lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0.25; } }
+    .blink { animation: blink 1s steps(1) infinite; }
+  </style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 22px 20px 20px; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(180deg, #0a1114 0%, #05080a 30%, #05080a 100%); overflow: hidden; position: relative;">
+
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <div class="lbl" style="color: {{ph.dim}};">Dest</div>
+      <div style="font-size: 16px; font-weight: 700; letter-spacing: 0.06em; color: {{ph.lit}};">FIRE 30,000,000 · JAN 2040</div>
+    </div>
+    <div class="{{pace.cls}}" style="padding: 8px 12px; border: 2px solid {{pace.color}}; color: {{pace.color}}; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; text-shadow: 0 0 8px {{pace.color}}; box-shadow: 0 0 10px {{pace.glowRgba}}, inset 0 0 10px {{pace.glowRgba}};">{{pace.label}}</div>
+  </div>
+
+  <div style="position: relative; width: 350px; height: 236px; margin: 0 auto;">
+    <svg width="350" height="236" viewBox="0 0 350 236" style="display: block; overflow: visible;">
+      <g>
+        <sc-for list="{{seg.off}}" as="s" hint-placeholder-count="40">
+          <line x1="{{s.x1}}" y1="{{s.y1}}" x2="{{s.x2}}" y2="{{s.y2}}" stroke="{{ph.ghost}}" stroke-width="9"></line>
+        </sc-for>
+      </g>
+      <g style="filter: drop-shadow(0 0 5px {{ph.lit}});">
+        <sc-for list="{{seg.on}}" as="s" hint-placeholder-count="12">
+          <line x1="{{s.x1}}" y1="{{s.y1}}" x2="{{s.x2}}" y2="{{s.y2}}" stroke="{{ph.lit}}" stroke-width="9"></line>
+        </sc-for>
+      </g>
+      <g class="blink" style="filter: drop-shadow(0 0 6px #ff4d3d);">
+        <line x1="{{seg.req.x1}}" y1="{{seg.req.y1}}" x2="{{seg.req.x2}}" y2="{{seg.req.y2}}" stroke="#ff4d3d" stroke-width="9"></line>
+      </g>
+      <sc-for list="{{seg.labels}}" as="t" hint-placeholder-count="4">
+        <text x="{{t.x}}" y="{{t.y}}" fill="{{ph.dim}}" font-size="12" font-weight="600" font-family="Chakra Petch, sans-serif" text-anchor="middle" dominant-baseline="middle">{{t.label}}</text>
+      </sc-for>
+      <g transform="translate({{seg.earn.x}} {{seg.earn.y}}) rotate({{seg.earn.a}})">
+        <path d="M 0 0 L -5 -10 L 5 -10 Z" fill="{{ph.dim}}"></path>
+      </g>
+    </svg>
+    <div style="position: absolute; left: 0; right: 0; top: 96px; display: flex; flex-direction: column; align-items: center; gap: 0;">
+      <div style="position: relative; height: 80px; display: flex; align-items: center; justify-content: center;">
+        <div class="dot" style="position: absolute; font-size: 76px; line-height: 1; color: {{ph.ghost}};">8888</div>
+        <div class="dot" style="position: relative; font-size: 76px; line-height: 1; color: {{ph.lit}}; text-shadow: 0 0 12px {{ph.glowRgba}};">{{saveRateText}}</div>
+      </div>
+      <div class="lbl" style="color: {{ph.dim}};">¥ saved / hour</div>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0 6px;">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <div class="lbl" style="color: {{ph.dim}};">Need</div>
+      <div class="dot" style="font-size: 24px; line-height: 1; color: #ff4d3d; text-shadow: 0 0 8px rgba(255,77,61,0.6);">{{reqRateText}}</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px; align-items: center;">
+      <div class="lbl" style="color: {{ph.dim}};">Earn</div>
+      <div class="dot" style="font-size: 24px; line-height: 1; color: {{ph.mid}};">{{earnRateText}}</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-end;">
+      <div class="lbl" style="color: {{ph.dim}};">Clock</div>
+      <div style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; line-height: 24px; color: {{clock.color}}; text-shadow: 0 0 8px {{clock.glow}};">{{clock.label}}</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border: 1px solid {{ph.ghost}}; box-shadow: inset 0 0 24px rgba(0,0,0,0.6);">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <div class="lbl" style="color: {{ph.dim}};">Total saved</div>
+      <div class="dot" style="font-size: 16px; color: {{ph.mid}};">{{odo.pct}}</div>
+    </div>
+    <div style="position: relative; height: 44px; display: flex; align-items: center; justify-content: flex-end;">
+      <div class="dot" style="position: absolute; right: 0; font-size: 40px; line-height: 1; color: {{ph.ghost}};">88,888,888.88</div>
+      <div class="dot" style="position: relative; font-size: 40px; line-height: 1; color: {{ph.lit}}; text-shadow: 0 0 10px {{ph.glowRgba}};">{{odo.total}}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <div class="lbl" style="color: {{ph.dim}};">Trip today</div>
+      <div class="dot" style="font-size: 22px; line-height: 1; color: {{ph.lit}};">+{{odo.today}}</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <div class="lbl" style="color: {{ph.dim}};">Arrival</div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: {{pace.color}};">{{eta.projected}} · {{eta.verdict}}</div>
+    </div>
+    <div style="display: flex; gap: 3px; height: 16px;">
+      <sc-for list="{{eta.cells}}" as="c" hint-placeholder-count="40">
+        <div style="flex-grow: 1; background: {{c.bg}}; box-shadow: {{c.glow}};"></div>
+      </sc-for>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: {{ph.dim}};">
+      <span>APR 2026</span>
+      <span style="display: inline-flex; align-items: center; gap: 5px; color: #ff4d3d;"><span style="display: inline-block; width: 8px; height: 10px; background: #ff4d3d;"></span>DEADLINE JAN 2040</span>
+      <span>{{eta.end}}</span>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 12px; align-items: stretch; margin-top: auto;">
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid {{ph.ghost}};">
+      <div class="lbl" style="color: {{ph.dim}};">1 h work buys</div>
+      <div style="display: flex; align-items: baseline; gap: 8px;">
+        <span class="dot" style="font-size: 30px; line-height: 1; color: {{ph.lit}}; text-shadow: 0 0 10px {{ph.glowRgba}};">{{freedomHours}}</span>
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: {{ph.mid}};">H OFF THE CLOCK</span>
+      </div>
+    </div>
+    <button onClick="{{addBoost}}" style="width: 104px; min-height: 44px; border: 2px solid {{ph.lit}}; background: transparent; color: {{ph.lit}}; font-family: 'Chakra Petch', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-shadow: 0 0 8px {{ph.glowRgba}}; box-shadow: 0 0 10px {{ph.glowRgba}}, inset 0 0 10px {{ph.glowRgba}}; cursor: pointer;">Boost +50k</button>
+  </div>
+
+  <div style="position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(180deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, rgba(0,0,0,0) 1px, rgba(0,0,0,0) 3px);"></div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"phosphor":{"editor":"enum","options":["cyan","green","amber"],"default":"cyan","section":"Look"},"clockedIn":{"editor":"boolean","default":true,"section":"Simulation"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { now: Date.now(), mountedAt: Date.now(), boosts: 0 };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ now: Date.now() }), 100);
+  }
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+  }
+  fmt(n, frac) {
+    const f = frac === undefined ? 0 : frac;
+    return n.toLocaleString('en-US', { minimumFractionDigits: f, maximumFractionDigits: f });
+  }
+  pt(cx, cy, r, deg) {
+    const a = (deg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  }
+  seg(cx, cy, r1, r2, deg) {
+    const a = this.pt(cx, cy, r1, deg);
+    const b = this.pt(cx, cy, r2, deg);
+    return { x1: a[0].toFixed(1), y1: a[1].toFixed(1), x2: b[0].toFixed(1), y2: b[1].toFixed(1) };
+  }
+  renderVals() {
+    const tone = this.props.phosphor ?? 'cyan';
+    const clockedIn = this.props.clockedIn ?? true;
+    const palette = {
+      cyan:  { lit: '#5cf2df', mid: '#3aa89b', dim: '#2b6f68', ghost: '#0f2a2a', glowRgba: 'rgba(92,242,223,0.55)' },
+      green: { lit: '#8dff6a', mid: '#5fb548', dim: '#3f7a31', ghost: '#122a10', glowRgba: 'rgba(141,255,106,0.55)' },
+      amber: { lit: '#ffc14d', mid: '#c28f2f', dim: '#7d5e22', ghost: '#2a2010', glowRgba: 'rgba(255,193,77,0.55)' }
+    };
+    const ph = palette[tone] || palette.cyan;
+
+    // Sample inputs (the real app reads these from settings)
+    const netMonthly = 350000;
+    const spendMonthly = 200000;
+    const workHoursMonth = 20 * 8;
+    const startBalance = 4200000;
+    const goal = 30000000;
+    const start = new Date('2026-04-01T00:00:00+09:00').getTime();
+    const deadline = new Date('2040-01-01T00:00:00+09:00').getTime();
+
+    const earnRate = netMonthly / workHoursMonth;
+    const saveRate = (netMonthly - spendMonthly) / workHoursMonth;
+    const lifeCostPerHour = spendMonthly / (365.25 * 24 / 12);
+
+    const now = this.state.now;
+    const elapsedH = clockedIn ? (now - this.state.mountedAt) / 3600000 : 0;
+    const sessionSaved = saveRate * elapsedH;
+    const saved = startBalance + sessionSaved + this.state.boosts;
+
+    const gap = Math.max(0, goal - saved);
+    const monthsToDeadline = Math.max(0, (deadline - now) / (30.4375 * 24 * 3600000));
+    const reqRate = monthsToDeadline > 0 ? gap / (monthsToDeadline * workHoursMonth) : Infinity;
+    const monthsNeeded = gap / (netMonthly - spendMonthly);
+    const projected = new Date(now + monthsNeeded * 30.4375 * 24 * 3600000);
+    const lateMonths = Math.round(monthsNeeded - monthsToDeadline);
+    const onPace = lateMonths <= 0;
+
+    // Segmented arc: 40 segments over 200°, from -100° to +100°
+    const max = 3000, N = 40;
+    const cx = 175, cy = 178, r1 = 130, r2 = 156;
+    const angOf = (i) => -100 + 200 * (i + 0.5) / N;
+    const shownRate = clockedIn ? saveRate : 0;
+    const litCount = Math.round(N * Math.min(max, shownRate) / max);
+    const reqIdx = Math.min(N - 1, Math.floor(N * Math.min(max, isFinite(reqRate) ? reqRate : max) / max));
+    const on = [], off = [];
+    for (let i = 0; i < N; i++) {
+      const s = this.seg(cx, cy, r1, r2, angOf(i));
+      off.push(s);
+      if (i < litCount && i !== reqIdx) on.push(s);
+    }
+    const labels = [0, 10, 20, 30].map((v) => {
+      const p = this.pt(cx, cy, r2 + 16, -100 + 200 * v / 30);
+      return { x: p[0].toFixed(1), y: p[1].toFixed(1), label: String(v) };
+    });
+    const earnA = -100 + 200 * Math.min(max, clockedIn ? earnRate : 0) / max;
+    const earnP = this.pt(cx, cy, r2 + 4, earnA);
+
+    // Arrival timeline: 40 cells from start to max(projected, deadline)
+    const span = Math.max(projected.getTime(), deadline) - start;
+    const nowCell = Math.floor(40 * (now - start) / span);
+    const dlCell = Math.min(39, Math.floor(40 * (deadline - start) / span));
+    const cells = [];
+    for (let i = 0; i < 40; i++) {
+      if (i === dlCell) cells.push({ bg: '#ff4d3d', glow: '0 0 6px rgba(255,77,61,0.7)' });
+      else if (i <= nowCell) cells.push({ bg: ph.lit, glow: '0 0 6px ' + ph.glowRgba });
+      else cells.push({ bg: ph.ghost, glow: 'none' });
+    }
+    const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const endDate = new Date(start + span);
+
+    return {
+      ph: ph,
+      pace: onPace
+        ? { label: 'On pace', color: ph.lit, glowRgba: ph.glowRgba, cls: '' }
+        : { label: 'Too slow', color: '#ff4d3d', glowRgba: 'rgba(255,77,61,0.5)', cls: 'blink' },
+      seg: { on: on, off: off, req: this.seg(cx, cy, r1, r2, angOf(reqIdx)), labels: labels, earn: { x: earnP[0].toFixed(1), y: earnP[1].toFixed(1), a: earnA.toFixed(1) } },
+      saveRateText: this.fmt(shownRate),
+      reqRateText: this.fmt(reqRate),
+      earnRateText: this.fmt(clockedIn ? earnRate : 0),
+      clock: clockedIn
+        ? { label: 'IN 09:00–18:00', color: ph.lit, glow: ph.glowRgba }
+        : { label: 'OFF · 0 ¥/H', color: ph.dim, glow: 'transparent' },
+      odo: {
+        total: this.fmt(saved, 2),
+        today: this.fmt(sessionSaved + this.state.boosts, 2),
+        pct: (100 * saved / goal).toFixed(1) + '%'
+      },
+      eta: {
+        projected: months[projected.getMonth()] + ' ' + projected.getFullYear(),
+        verdict: lateMonths === 0 ? 'ON THE DEADLINE' : (onPace ? Math.abs(lateMonths) + ' MO EARLY' : lateMonths + ' MO LATE'),
+        cells: cells,
+        end: months[endDate.getMonth()] + ' ' + endDate.getFullYear()
+      },
+      freedomHours: (saveRate / lifeCostPerHour).toFixed(1),
+      addBoost: () => this.setState({ boosts: this.state.boosts + 50000 })
+    };
+  }
+}
+</script>
+</body>
+</html>

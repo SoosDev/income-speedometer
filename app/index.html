@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#05080a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Speedo">
+  <title>Income Speedometer</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-phosphor="cyan">
+  <main class="panel" id="panel">
+
+    <header class="row top">
+      <div class="col">
+        <div class="lbl" id="destLbl">Dest</div>
+        <div class="dest lit" id="dest">—</div>
+      </div>
+      <div class="pace" id="pace">—</div>
+    </header>
+
+    <section class="gauge">
+      <svg id="gaugeSvg" viewBox="0 0 350 236" width="350" height="236" aria-hidden="true">
+        <g id="segOff"></g>
+        <g id="segOn" class="glow"></g>
+        <g id="segReq" class="glow-red blink"><line id="reqLine" x1="0" y1="0" x2="0" y2="0"></line></g>
+        <g id="segLabels"></g>
+        <g id="earnMark"><path d="M 0 0 L -5 -10 L 5 -10 Z"></path></g>
+      </svg>
+      <div class="center">
+        <div class="ghosted">
+          <div class="dot ghost big">8888</div>
+          <div class="dot lit big glow-text" id="saveRate">0</div>
+        </div>
+        <div class="lbl">¥ saved / hour</div>
+      </div>
+    </section>
+
+    <section class="row three">
+      <div class="col"><div class="lbl">Need</div><div class="dot red mid glow-text-red" id="reqRate">—</div></div>
+      <div class="col center-col"><div class="lbl">Earn</div><div class="dot midtone mid" id="earnRate">—</div></div>
+      <div class="col right-col"><div class="lbl">Clock</div><div class="clock" id="clock">—</div></div>
+    </section>
+
+    <section class="box">
+      <div class="row"><div class="lbl">Total saved</div><div class="dot midtone small" id="pct">—</div></div>
+      <div class="ghosted right tall">
+        <div class="dot ghost total">88,888,888.88</div>
+        <div class="dot lit total glow-text" id="total">0</div>
+      </div>
+      <div class="row"><div class="lbl">Trip today</div><div class="dot lit trip" id="today">+0</div></div>
+    </section>
+
+    <section class="col gap6">
+      <div class="row"><div class="lbl">Arrival</div><div class="eta" id="eta">—</div></div>
+      <div class="cells" id="cells"></div>
+      <div class="row tiny">
+        <span id="tlStart">—</span>
+        <span class="red"><span class="sq"></span><span id="tlDeadline">DEADLINE —</span></span>
+        <span id="tlEnd">—</span>
+      </div>
+    </section>
+
+    <section class="row bottom">
+      <div class="box grow">
+        <div class="lbl">1 h work buys</div>
+        <div class="row baseline gap8 nowrap">
+          <span class="dot lit mid glow-text" id="freedom">—</span>
+          <span class="midtone small-caps">H off the clock</span>
+        </div>
+      </div>
+      <button class="btn" id="boostBtn" type="button">Boost</button>
+      <button class="btn icon" id="settingsBtn" type="button" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+      </button>
+    </section>
+
+    <div class="scanlines" aria-hidden="true"></div>
+  </main>
+
+  <dialog id="boostDialog">
+    <form method="dialog" id="boostForm">
+      <h2>Log a boost</h2>
+      <p class="help">Dividends, bonus, a stock sale. Moves the odometer, not the needle.</p>
+      <label>Amount (¥)<input name="amount" type="number" inputmode="numeric" step="1" required autofocus></label>
+      <label>Date<input name="date" type="date" required></label>
+      <label>Note<input name="note" type="text" maxlength="60" placeholder="optional"></label>
+      <div class="actions"><button type="button" value="cancel" class="btn ghost-btn" data-close>Cancel</button><button type="submit" class="btn">Add</button></div>
+      <div class="list" id="boostList"></div>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" id="settingsForm">
+      <h2>Settings</h2>
+      <fieldset>
+        <legend>Goal</legend>
+        <label>Name<input name="goalName" type="text" maxlength="24" required></label>
+        <label>Amount (¥)<input name="goalAmount" type="number" inputmode="numeric" step="1" min="1" required></label>
+        <label>Deadline<input name="deadline" type="date" required></label>
+      </fieldset>
+      <fieldset>
+        <legend>Starting point</legend>
+        <label>Counting from<input name="startDate" type="date" required></label>
+        <label>Balance on that day (¥)<input name="startBalance" type="number" inputmode="numeric" step="1" required></label>
+      </fieldset>
+      <fieldset>
+        <legend>Money per month</legend>
+        <label>Take-home 手取り (¥)<input name="netMonthly" type="number" inputmode="numeric" step="1" min="0" required></label>
+        <label>Spending (¥)<input name="spendMonthly" type="number" inputmode="numeric" step="1" min="0" required></label>
+      </fieldset>
+      <fieldset>
+        <legend>Work window</legend>
+        <p class="help">Set it to your paid hours. The needle moves only inside this window on these days.</p>
+        <div class="days" id="days">
+          <label><input type="checkbox" name="workDays" value="1"><span>Mon</span></label>
+          <label><input type="checkbox" name="workDays" value="2"><span>Tue</span></label>
+          <label><input type="checkbox" name="workDays" value="3"><span>Wed</span></label>
+          <label><input type="checkbox" name="workDays" value="4"><span>Thu</span></label>
+          <label><input type="checkbox" name="workDays" value="5"><span>Fri</span></label>
+          <label><input type="checkbox" name="workDays" value="6"><span>Sat</span></label>
+          <label><input type="checkbox" name="workDays" value="0"><span>Sun</span></label>
+        </div>
+        <div class="row gap8">
+          <label class="grow">Start<input name="workStart" type="time" required></label>
+          <label class="grow">End<input name="workEnd" type="time" required></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Display</legend>
+        <label>Phosphor
+          <select name="phosphor"><option value="cyan">Cyan</option><option value="green">Green</option><option value="amber">Amber</option></select>
+        </label>
+        <label class="check"><input type="checkbox" name="keepAwake"><span>Keep the screen on while open</span></label>
+      </fieldset>
+      <div class="actions"><button type="button" class="btn ghost-btn" data-close>Cancel</button><button type="submit" class="btn">Save</button></div>
+      <div class="row gap8 data-row">
+        <button type="button" class="btn ghost-btn small-btn" id="exportBtn">Export JSON</button>
+        <label class="btn ghost-btn small-btn">Import JSON<input type="file" id="importFile" accept="application/json" hidden></label>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
