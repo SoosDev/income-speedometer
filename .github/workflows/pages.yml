@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Test and deploy
 
 on:
   push:
@@ -25,6 +25,8 @@ jobs:
       - run: npm test
 
   deploy:
+    # GitHub Pages is only available for public repos on the Free plan.
+    if: ${{ !github.event.repository.private }}
     needs: test
     runs-on: ubuntu-latest
     environment:
